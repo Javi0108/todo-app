@@ -1,0 +1,26 @@
+#loadTablero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#tituloTablero {
+    padding-left: 2rem;
+    margin-bottom: 3rem;
+    margin-top: 2rem;
+
+}
+
+#listas {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    list-style-type: none;
+}
+
+#elementosListas {
+    background-color: rgb(169, 169, 169);
+    padding: 2rem;
+    border-radius: 20px;
+}
