@@ -5,6 +5,11 @@
     align-items: center;
 }
 
+#tablero {
+    width: 100vw;
+    background-color: rgb(232, 232, 232);
+}
+
 #tituloTablero {
     padding-left: 2rem;
     margin-bottom: 3rem;

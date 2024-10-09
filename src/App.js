@@ -1,13 +1,13 @@
 import React from 'react';
-import Menu from './components/menu';
-import Tablero from './components/tableros';
+import Menu from './components/Menu';
+import Tableros from './components/Tableros';
 import './App.css';
 
 function App() {
   return (
     <div className="App d-flex flex-row">
       <Menu/>
-      <Tablero />
+      <Tableros />
     </div>
   );
 }

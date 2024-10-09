@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 
 import "../css/tablero.css";
 
-function Tablero() {
+function Tableros() {
   // Estado para almacenar el tablero
   const [tablero, setTablero] = useState(null);
   const [error, setError] = useState(null);
@@ -62,4 +62,4 @@ function Tablero() {
   );
 }
 
-export default Tablero;
+export default Tableros;
