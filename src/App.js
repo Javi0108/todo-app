@@ -1,6 +1,6 @@
 import React from 'react';
 import Menu from './components/Menu';
-import Tableros from './components/Tableros';
+import Tableros from './components/tableros';
 import './App.css';
 
 function App() {
