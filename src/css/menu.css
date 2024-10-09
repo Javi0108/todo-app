@@ -1,5 +1,5 @@
 #menu {
-    width: 15%;
+    width: 270px;
     height: 100vh;
     padding-top: 3rem;
     margin: 5px;
@@ -10,7 +10,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    gap: 15px;
+    gap: 5px;
     margin-top: 5px;
     list-style-type: none;
     font-size: medium;

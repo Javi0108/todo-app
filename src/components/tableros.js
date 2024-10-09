@@ -9,7 +9,7 @@ function Tableros() {
 
   // useEffect para hacer la petición cuando el componente se monta
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/tableros/1/")
+    fetch("http://127.0.0.1:8000/api/tableros/7/")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error en la petición: " + response.status);
