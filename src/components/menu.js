@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "../css/menu.css";
 
-function Menu() {
+function Menu({ onSelectTablero }) {
   // Estado para almacenar el tablero
   const [tablero, setTablero] = useState(null);
   const [error, setError] = useState(null);
   const [descripcionTemporal, setDescripcionTemporal] = useState({});
+  const [isReadonly, setIsReadonly] = useState({}); // Estado para controlar readonly
 
   // Obtiene todos los tableros
   const getTablero = () => {
@@ -107,8 +108,20 @@ function Menu() {
     });
   };
 
-  const handleDescChange = (event, id) => {
-    actualizarTablero(id, event.target.value);
+  const handleBlur = (id) => {
+    actualizarTablero(id, descripcionTemporal[id]);
+    setIsReadonly({ ...isReadonly, [id]: true }); // Volver a poner en modo readonly
+  };
+
+  const handleEditClick = (id) => {
+    setIsReadonly({ ...isReadonly, [id]: false }); // Hacer editable
+  };
+
+  const handleTabClick = (event, id) => {
+    if (event.target.tagName === "INPUT" || event.target.tagName === "BUTTON") {
+      return;
+    }
+    onSelectTablero(id); // Establece el tablero seleccionado
   };
 
   if (error) {
@@ -135,21 +148,28 @@ function Menu() {
             key={tableros.id}
             id="tabDesc"
             className="list-group-item bg-dark text-white"
+            onClick={(event) => handleTabClick(event, tableros.id)}
           >
             <i className="bi bi-journal-bookmark-fill"></i>
             <input
               type="text"
               id="tabDescInput"
-              value={tableros.descripcion}
+              readOnly={isReadonly[tableros.id] !== false}
+              value={descripcionTemporal[tableros.id] || tableros.descripcion}
               onChange={(event) => {
                 handleInputChange(event, tableros.id);
               }}
-              onBlur={(event) => {
-                handleDescChange(event, tableros.id);
-              }}
+              onBlur={() => handleBlur(tableros.id)}
             ></input>
             <button
-              id="borrarTableroBtn"
+              id="tabsBtn"
+              className="btn btn-dark"
+              onClick={() => handleEditClick(tableros.id)}
+            >
+              <i className="bi bi-pencil-fill"></i>
+            </button>
+            <button
+              id="tabsBtn"
               className="btn btn-dark"
               onClick={() => {
                 eliminarTablero(tableros.id);
@@ -162,9 +182,7 @@ function Menu() {
         <button
           id="añadirTablero"
           className="btn btn-dark"
-          onClick={() => {
-            añadirTablero("Nuevo tablero");
-          }}
+          onClick={() => añadirTablero("Nuevo tablero")}
         >
           + Añadir tablero
         </button>

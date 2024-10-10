@@ -1,29 +1,29 @@
 import React, { useState, useEffect } from "react";
-
 import "../css/tablero.css";
 
-function Tableros() {
-  // Estado para almacenar el tablero
+function Tableros({ id }) {
   const [tablero, setTablero] = useState(null);
   const [error, setError] = useState(null);
-
+  console.log(id);
   // useEffect para hacer la petición cuando el componente se monta
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/tableros/7/")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Error en la petición: " + response.status);
-        }
-        return response.json(); // Convertir la respuesta a JSON
-      })
-      .then((data) => {
-        setTablero(data); // Guardar los datos del tablero en el estado
-        console.log(data);
-      })
-      .catch((error) => {
-        setError(error.message); // Guardar el error en el estado si ocurre
-      });
-  }, []); // El array vacío hace que useEffect solo se ejecute una vez, al montar el componente
+    if (id) {
+      fetch(`http://127.0.0.1:8000/api/tableros/${id}/`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error en la petición: " + response.status);
+          }
+          return response.json(); // Convertir la respuesta a JSON
+        })
+        .then((data) => {
+          setTablero(data); // Guardar los datos del tablero en el estado
+          console.log(data);
+        })
+        .catch((error) => {
+          setError(error.message); // Guardar el error en el estado si ocurre
+        });
+    }
+  }, [id]); // El array vacío hace que useEffect solo se ejecute una vez, al montar el componente
 
   if (error) {
     return (
