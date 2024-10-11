@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Menu from './components/Menu';
+import Listas from './components/listas';
 import Tableros from './components/tableros';
 import './App.css';
 
@@ -12,8 +12,8 @@ function App() {
 
   return (
     <div className="App d-flex flex-row">
-      <Menu onSelectTablero={handleTableroSelect}/>
-      {tableroSeleccionadoId && <Tableros id={tableroSeleccionadoId} />}
+      <Tableros onSelectTablero={handleTableroSelect}/>
+      {tableroSeleccionadoId && <Listas id={tableroSeleccionadoId} />}
     </div>
   );
 }

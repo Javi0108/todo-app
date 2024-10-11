@@ -24,8 +24,24 @@
     list-style-type: none;
 }
 
+#listaTareas {
+    padding-left: 0px;
+}
+
+#tareas {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
 #elementosListas {
+    width: 350px;
+    min-width: 300px;
     background-color: rgb(169, 169, 169);
     padding: 2rem;
     border-radius: 20px;
+}
+
+#añadirTareaBtn {
+    width: 100%;
+    margin-top: 1rem;
 }

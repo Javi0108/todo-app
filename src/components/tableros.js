@@ -1,29 +1,80 @@
 import React, { useState, useEffect } from "react";
-import "../css/tablero.css";
+import {
+  getTablero,
+  añadirTablero,
+  eliminarTablero,
+  actualizarTablero,
+} from "../services/servicesTableros";
+import "../css/tableros.css";
 
-function Tableros({ id }) {
+function Tableros({ onSelectTablero }) {
   const [tablero, setTablero] = useState(null);
   const [error, setError] = useState(null);
-  console.log(id);
-  // useEffect para hacer la petición cuando el componente se monta
-  useEffect(() => {
-    if (id) {
-      fetch(`http://127.0.0.1:8000/api/tableros/${id}/`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Error en la petición: " + response.status);
-          }
-          return response.json(); // Convertir la respuesta a JSON
-        })
-        .then((data) => {
-          setTablero(data); // Guardar los datos del tablero en el estado
-          console.log(data);
-        })
-        .catch((error) => {
-          setError(error.message); // Guardar el error en el estado si ocurre
-        });
+  const [descripcionTemporal, setDescripcionTemporal] = useState({});
+  const [isReadonly, setIsReadonly] = useState({}); // Estado para controlar readonly
+
+  const fetchTableros = async () => {
+    try {
+      const data = await getTablero();
+      setTablero(data);
+    } catch (error) {
+      setError(error.message);
     }
-  }, [id]); // El array vacío hace que useEffect solo se ejecute una vez, al montar el componente
+  };
+
+  useEffect(() => {
+    fetchTableros();
+  }, []);
+
+  const handleAñadirTablero = async (descripcion) => {
+    try {
+      await añadirTablero(descripcion);
+      fetchTableros();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleEliminarTablero = async (id) => {
+    try {
+      await eliminarTablero(id);
+      fetchTableros();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleActualizarTablero = async (id, descripcion) => {
+    try {
+      await actualizarTablero(id, descripcion);
+      fetchTableros();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleInputChange = (event, id) => {
+    setDescripcionTemporal({
+      ...descripcionTemporal,
+      [id]: event.target.value,
+    });
+  };
+
+  const handleBlur = (id) => {
+    handleActualizarTablero(id, descripcionTemporal[id]);
+    setIsReadonly({ ...isReadonly, [id]: true }); // Volver a poner en modo readonly
+  };
+
+  const handleEditClick = (id) => {
+    setIsReadonly({ ...isReadonly, [id]: false }); // Hacer editable
+  };
+
+  const handleTabClick = (event, id) => {
+    if (event.target.tagName === "INPUT" || event.target.tagName === "BUTTON") {
+      return;
+    }
+    onSelectTablero(id); // Establece el tablero seleccionado
+  };
 
   if (error) {
     return (
@@ -35,28 +86,58 @@ function Tableros({ id }) {
 
   if (!tablero) {
     return (
-      <div id="loadTablero" className="loadTablero">
+      <div className="App">
         <p>Cargando...</p>
       </div>
     );
   }
 
   return (
-    <div id="tablero" className="tablero">
-      <h1 id="tituloTablero">{tablero.descripcion}</h1>
-      <ul id="listas">
-        {tablero.listas.map((lista) => (
-          <li key={lista.id} id="elementosListas">
-            <h3>{lista.nombre}</h3>
-            <ul>
-              {lista.tareas.map((tareas) => (
-                <li key={tareas.id}>{tareas.descripcion}</li>
-              ))}
-              <button>+</button>
-            </ul>
+    <div id="menu">
+      <ul className="list-group">
+        {tablero.map((tableros) => (
+          <li
+            key={tableros.id}
+            id="tabDesc"
+            className="list-group-item bg-dark text-white"
+            onClick={(event) => handleTabClick(event, tableros.id)}
+          >
+            <i className="bi bi-journal-bookmark-fill"></i>
+            <input
+              type="text"
+              id="tabDescInput"
+              readOnly={isReadonly[tableros.id] !== false}
+              value={descripcionTemporal[tableros.id] || tableros.descripcion}
+              onChange={(event) => {
+                handleInputChange(event, tableros.id);
+              }}
+              onBlur={() => handleBlur(tableros.id)}
+            ></input>
+            <button
+              id="tabsBtn"
+              className="btn btn-dark"
+              onClick={() => handleEditClick(tableros.id)}
+            >
+              <i className="bi bi-pencil-fill"></i>
+            </button>
+            <button
+              id="tabsBtn"
+              className="btn btn-dark"
+              onClick={() => {
+                handleEliminarTablero(tableros.id);
+              }}
+            >
+              <i className="bi bi-trash"></i>
+            </button>
           </li>
         ))}
-        <button>+</button>
+        <button
+          id="añadirTablero"
+          className="btn btn-dark"
+          onClick={() => handleAñadirTablero("Nuevo tablero")}
+        >
+          + Añadir tablero
+        </button>
       </ul>
     </div>
   );
