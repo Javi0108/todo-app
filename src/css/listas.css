@@ -1,33 +1,56 @@
-#menu {
-    width: 300px;
-    height: 100vh;
-    padding-top: 3rem;
-    margin: 5px;
+#loadTablero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-#tabDesc {
+#tablero {
+    width: 100vw;
+    background-color: rgb(232, 232, 232);
+}
+
+#tituloTablero {
+    padding-left: 2rem;
+    margin-bottom: 3rem;
+    margin-top: 2rem;
+
+}
+
+.listaName {
+    background-color: transparent;
+    border: 0px;
+    font-size: x-large;
+    font-weight: 500;
+    width: 250px
+    
+}
+
+#listas {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 5px;
-    margin-top: 5px;
+    gap: 2rem;
     list-style-type: none;
-    font-size: medium;
-    border-radius: 0.375rem;
 }
 
-#tabDescInput {
-    background-color: transparent;
-    color: white;
-    border: 0px;
+#listaTareas {
+    padding-left: 0px;
 }
 
-#tabsBtn {
-    padding: 5px;
-    width: fit-content;
+#tareas {
+    list-style-type: none;
+    padding-left: 0px;
 }
 
-#añadirTablero {
-    margin-top: 5px;
+#elementosListas {
+    width: 350px;
+    min-width: 300px;
+    background-color: rgb(169, 169, 169);
+    padding: 2rem;
+    border-radius: 20px;
+}
+
+#añadirTareaBtn {
+    width: 100%;
+    margin-top: 1rem;
 }

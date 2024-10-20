@@ -11,7 +11,7 @@ function Tableros({ onSelectTablero }) {
   const [tablero, setTablero] = useState(null);
   const [error, setError] = useState(null);
   const [descripcionTemporal, setDescripcionTemporal] = useState({});
-  const [isReadonly, setIsReadonly] = useState({}); // Estado para controlar readonly
+  const [isDisabled, setIsDisabled] = useState({}); // Estado para controlar readonly
 
   const fetchTableros = async () => {
     try {
@@ -62,15 +62,22 @@ function Tableros({ onSelectTablero }) {
 
   const handleBlur = (id) => {
     handleActualizarTablero(id, descripcionTemporal[id]);
-    setIsReadonly({ ...isReadonly, [id]: true }); // Volver a poner en modo readonly
+    // setIsReadonly({ ...isReadonly, [id]: true }); // Volver a poner en modo readonly
+    setIsDisabled({ ...isDisabled, [id]: true }); // Volver a poner
+    document.getElementById(id).blur();
   };
 
   const handleEditClick = (id) => {
-    setIsReadonly({ ...isReadonly, [id]: false }); // Hacer editable
+    // setIsReadonly({ ...isReadonly, [id]: false }); // Hacer editable
+    setIsDisabled({ ...isDisabled, [id]: false });
+    // Esperar un tick para asegurar que el DOM se actualice
+    setTimeout(() => {
+      document.getElementById(id).focus(); // Poner el foco en el input
+    }, 0); // Usar timeout de 0 ms para dejar que React actualice el DOM primero
   };
 
   const handleTabClick = (event, id) => {
-    if (event.target.tagName === "INPUT" || event.target.tagName === "BUTTON") {
+    if (event.target.tagName === "button") {
       return;
     }
     onSelectTablero(id); // Establece el tablero seleccionado
@@ -99,14 +106,16 @@ function Tableros({ onSelectTablero }) {
           <li
             key={tableros.id}
             id="tabDesc"
-            className="list-group-item bg-dark text-white"
+            className="tabDesc list-group-item bg-dark text-white"
             onClick={(event) => handleTabClick(event, tableros.id)}
           >
             <i className="bi bi-journal-bookmark-fill"></i>
             <input
               type="text"
-              id="tabDescInput"
-              readOnly={isReadonly[tableros.id] !== false}
+              id={tableros.id}
+              className="tabDescInput"
+              disabled={isDisabled[tableros.id] !== false}
+              // readOnly={isReadonly[tableros.id] !== false}
               value={descripcionTemporal[tableros.id] || tableros.descripcion}
               onChange={(event) => {
                 handleInputChange(event, tableros.id);
@@ -134,7 +143,7 @@ function Tableros({ onSelectTablero }) {
         <button
           id="añadirTablero"
           className="btn btn-dark"
-          onClick={() => handleAñadirTablero("Nuevo tablero")}
+          onClick={() => handleAñadirTablero("")}
         >
           + Añadir tablero
         </button>

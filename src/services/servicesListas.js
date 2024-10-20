@@ -3,7 +3,7 @@ const API_URL = "http://127.0.0.1:8000/api/listas/";
 // Obtiene todos los tableros
 export const getLista = async (idTablero) => {
   try {
-    const response = await fetch(`${API_URL}?tablero_id=${idTablero}`);
+    const response = await fetch(`${API_URL}tablero/${idTablero}`);
     if (!response.ok) {
       throw new Error("Error en la petición: " + response.status)
     }
@@ -32,6 +32,7 @@ export const eliminarLista = async (id) => {
 };
 
 export const añadirLista = async (nombre, tablero) => {
+  console.log(tablero);
   try {
     const response = await fetch(API_URL, {
       method: "POST",
@@ -41,6 +42,7 @@ export const añadirLista = async (nombre, tablero) => {
       body: JSON.stringify({ nombre: nombre, tablero: tablero }),
     });
     if (!response.ok) {
+      console.log(response);
       throw new Error("Error al añadir el registro");
     }
     return await response.json();
