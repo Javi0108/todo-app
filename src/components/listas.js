@@ -16,7 +16,9 @@ import "../css/listas.css";
 function Listas({ id }) {
   const [listas, setListas] = useState(null);
   const [error, setError] = useState(null);
-  const [descripcionTemporal, setDescripcionTemporal] = useState({});
+  const [descripcionTemporalLista, setDescripcionTemporalLista] = useState({});
+  const [descripcionTemporalTarea, setDescripcionTemporalTarea] = useState({});
+
   const [isDisabled, setIsDisabled] = useState({}); // Estado para controlar readonly
 
   const fetchListas = async () => {
@@ -71,7 +73,7 @@ function Listas({ id }) {
   const handleActualizarLista = async (id) => {
     try {
       setIsDisabled({ ...isDisabled, [id]: true });
-      await actualizarLista(id, descripcionTemporal[id]);
+      await actualizarLista(id, descripcionTemporalLista[id]);
       fetchListas();
     } catch (error) {
       console.error("Error:", error);
@@ -81,7 +83,7 @@ function Listas({ id }) {
   const handleActualizarTarea = async (id) => {
     try {
       setIsDisabled({ ...isDisabled, [id]: true });
-      await actualizarLista(id, descripcionTemporal[id]);
+      await actualizarTarea(id, descripcionTemporalTarea[id]);
       fetchListas();
     } catch (error) {
       console.error("Error:", error);
@@ -96,9 +98,16 @@ function Listas({ id }) {
     }, 0);
   };
 
-  const handleInputChange = (event, id) => {
-    setDescripcionTemporal({
-      ...descripcionTemporal,
+  const handleInputChangeLista = (event, id) => {
+    setDescripcionTemporalLista({
+      ...descripcionTemporalLista,
+      [id]: event.target.value,
+    });
+  };
+
+  const handleInputChangeTarea = (event, id) => {
+    setDescripcionTemporalTarea({
+      ...descripcionTemporalTarea,
       [id]: event.target.value,
     });
   };
@@ -132,9 +141,9 @@ function Listas({ id }) {
                 className="listaName"
                 maxLength={20}
                 disabled={isDisabled[lista.id] !== false}
-                value={descripcionTemporal[lista.id] || lista.nombre}
+                value={descripcionTemporalLista[lista.id] || lista.nombre}
                 onChange={(event) => {
-                  handleInputChange(event, lista.id);
+                  handleInputChangeLista(event, lista.id);
                 }}
                 onBlur={() => handleActualizarLista(lista.id)}
               ></input>
@@ -155,15 +164,37 @@ function Listas({ id }) {
             </div>
             <ul id="listaTareas">
               {lista.tareas.map((tareas) => (
-                <li key={tareas.id} id="tareas" className="d-flex flex-row flex-nowrap justify-content-between">
-                  {tareas.descripcion}
-                  <button
-                    id="botonTarea"
-                    className="p-2 h-25"
-                    onClick={() => handleEliminarTarea(tareas.id)}
-                  >
-                    <i className="bi bi-trash"></i>
-                  </button>
+                <li
+                  key={tareas.id}
+                  id="tareas"
+                  className="d-flex flex-row flex-nowrap justify-content-between"
+                >
+                  <input 
+                  type="text"
+                  id={tareas.id}
+                  className="tareaName"
+                  maxLength={20}
+                  disabled={isDisabled[tareas.id] !== false}
+                  value={descripcionTemporalTarea[tareas.id] || tareas.descripcion}
+                  onChange={(event) => {
+                    handleInputChangeTarea(event, tareas.id);
+                  }}
+                  onBlur={() => handleActualizarTarea(tareas.id)}
+                  ></input>
+                  <div className="d-flex flex-row gap-1">
+                    <button
+                      id="botonTarea"
+                      onClick={() => handleClick(tareas.id)}
+                    >
+                      <i className="bi bi-pencil-fill"></i>
+                    </button>
+                    <button
+                      id="botonTarea"
+                      onClick={() => handleEliminarTarea(tareas.id)}
+                    >
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  </div>
                 </li>
               ))}
               <button

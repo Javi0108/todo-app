@@ -54,6 +54,11 @@
     padding-left: 0px;
 }
 
+.tareaName {
+    background-color: transparent;
+    border: 0px;
+}
+
 #botonTarea {
     background-color: transparent;
     border: 0px;
