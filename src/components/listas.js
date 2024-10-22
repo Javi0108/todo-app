@@ -18,12 +18,11 @@ function Listas({ id }) {
   const [error, setError] = useState(null);
   const [descripcionTemporalLista, setDescripcionTemporalLista] = useState({});
   const [descripcionTemporalTarea, setDescripcionTemporalTarea] = useState({});
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastColor, setToastColor] = useState("");
-  const [toastIcon, setToastIcon] = useState("");
-
-  const [isDisabled, setIsDisabled] = useState({}); // Estado para controlar readonly
+  const [toastVisible, setToastVisible] = useState(false); // State to control the visibility of toast
+  const [toastMessage, setToastMessage] = useState(""); // State to control the message of toast
+  const [toastColor, setToastColor] = useState(""); // State to control the color of toast
+  const [toastIcon, setToastIcon] = useState(""); // State to control the icon of toast
+  const [isDisabled, setIsDisabled] = useState({}); // State to control inputs
 
   const fetchListas = async () => {
     try {

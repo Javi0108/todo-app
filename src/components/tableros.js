@@ -5,6 +5,7 @@ import {
   eliminarTablero,
   actualizarTablero,
 } from "../services/servicesTableros";
+import Toast from "./toast";
 import "../css/tableros.css";
 
 function Tableros({ onSelectTablero }) {
@@ -12,6 +13,10 @@ function Tableros({ onSelectTablero }) {
   const [error, setError] = useState(null);
   const [descripcionTemporal, setDescripcionTemporal] = useState({});
   const [isDisabled, setIsDisabled] = useState({}); // Estado para controlar readonly
+  const [toastVisible, setToastVisible] = useState(false); // State to control the visibility of toast
+  const [toastMessage, setToastMessage] = useState(""); // State to control the message of toast
+  const [toastColor, setToastColor] = useState(""); // State to control the color of toast
+  const [toastIcon, setToastIcon] = useState(""); // State to control the icon of toast
 
   const fetchTableros = async () => {
     try {
@@ -30,8 +35,15 @@ function Tableros({ onSelectTablero }) {
     try {
       await añadirTablero(descripcion);
       fetchTableros();
+      handleEvents("Board added", "success", "bi bi-check2-circle", true);
     } catch (error) {
       console.error("Error:", error);
+      handleEvents(
+        "Board not added",
+        "danger",
+        "bi bi-exclamation-circle",
+        true
+      );
     }
   };
 
@@ -39,8 +51,15 @@ function Tableros({ onSelectTablero }) {
     try {
       await eliminarTablero(id);
       fetchTableros();
+      handleEvents("Board deleted", "success", "bi bi-check2-circle", true);
     } catch (error) {
       console.error("Error:", error);
+      handleEvents(
+        "Board not deleted",
+        "danger",
+        "bi bi-exclamation-circle",
+        true
+      );
     }
   };
 
@@ -48,8 +67,15 @@ function Tableros({ onSelectTablero }) {
     try {
       await actualizarTablero(id, descripcion);
       fetchTableros();
+      handleEvents("Board modified", "success", "bi bi-check2-circle", true);
     } catch (error) {
       console.error("Error:", error);
+      handleEvents(
+        "Board not modified",
+        "danger",
+        "bi bi-exclamation-circle",
+        true
+      );
     }
   };
 
@@ -62,13 +88,11 @@ function Tableros({ onSelectTablero }) {
 
   const handleBlur = (id) => {
     handleActualizarTablero(id, descripcionTemporal[id]);
-    // setIsReadonly({ ...isReadonly, [id]: true }); // Volver a poner en modo readonly
     setIsDisabled({ ...isDisabled, [id]: true }); // Volver a poner
     document.getElementById(id).blur();
   };
 
   const handleEditClick = (id) => {
-    // setIsReadonly({ ...isReadonly, [id]: false }); // Hacer editable
     setIsDisabled({ ...isDisabled, [id]: false });
     // Esperar un tick para asegurar que el DOM se actualice
     setTimeout(() => {
@@ -81,6 +105,13 @@ function Tableros({ onSelectTablero }) {
       return;
     }
     onSelectTablero(id); // Establece el tablero seleccionado
+  };
+
+  const handleEvents = async (msg, color, icon, visible) => {
+    setToastMessage(msg);
+    setToastColor(color);
+    setToastIcon(icon);
+    setToastVisible(visible);
   };
 
   if (error) {
@@ -150,6 +181,14 @@ function Tableros({ onSelectTablero }) {
           + Add board
         </button>
       </ul>
+
+      <Toast
+        msg={toastMessage}
+        visible={toastVisible}
+        color={toastColor}
+        icon={toastIcon}
+        onClose={() => setToastVisible(false)}
+      />
     </div>
   );
 }

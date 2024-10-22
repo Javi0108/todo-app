@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import "../css/toast.css"
 
 function Toast({ msg, visible, color, icon, onClose }) {
   useEffect(() => {
