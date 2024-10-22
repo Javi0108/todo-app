@@ -6,18 +6,22 @@ import {
   actualizarLista,
 } from "../services/servicesListas";
 import {
-  getTareas,
   añadirTarea,
   eliminarTarea,
   actualizarTarea,
 } from "../services/serviceTareas";
 import "../css/listas.css";
+import Toast from "./toast";
 
 function Listas({ id }) {
   const [listas, setListas] = useState(null);
   const [error, setError] = useState(null);
   const [descripcionTemporalLista, setDescripcionTemporalLista] = useState({});
   const [descripcionTemporalTarea, setDescripcionTemporalTarea] = useState({});
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastColor, setToastColor] = useState("");
+  const [toastIcon, setToastIcon] = useState("");
 
   const [isDisabled, setIsDisabled] = useState({}); // Estado para controlar readonly
 
@@ -38,8 +42,15 @@ function Listas({ id }) {
     try {
       await añadirLista(nombre, id);
       fetchListas();
+      handleEvents("List added", "success", "bi bi-check2-circle", true);
     } catch (error) {
       console.error("Error:", error);
+      handleEvents(
+        "List not added",
+        "danger",
+        "bi bi-exclamation-circle",
+        true
+      );
     }
   };
 
@@ -47,8 +58,15 @@ function Listas({ id }) {
     try {
       await añadirTarea(descripcion, idLista);
       fetchListas();
+      handleEvents("Task added", "success", "bi bi-check2-circle", true);
     } catch (error) {
       console.error("Error:", error);
+      handleEvents(
+        "Task not added",
+        "danger",
+        "bi bi-exclamation-circle",
+        true
+      );
     }
   };
 
@@ -56,8 +74,15 @@ function Listas({ id }) {
     try {
       await eliminarLista(id);
       fetchListas();
+      handleEvents("List deleted", "success", "bi bi-check2-circle", true);
     } catch (error) {
       console.error("Error:", error);
+      handleEvents(
+        "List not deleted",
+        "danger",
+        "bi bi-exclamation-circle",
+        true
+      );
     }
   };
 
@@ -65,8 +90,15 @@ function Listas({ id }) {
     try {
       await eliminarTarea(id);
       fetchListas();
+      handleEvents("Task deleted", "success", "bi bi-check2-circle", true);
     } catch (error) {
       console.error("Error:", error);
+      handleEvents(
+        "Task not deleted",
+        "danger",
+        "bi bi-exclamation-circle",
+        true
+      );
     }
   };
 
@@ -75,8 +107,15 @@ function Listas({ id }) {
       setIsDisabled({ ...isDisabled, [id]: true });
       await actualizarLista(id, descripcionTemporalLista[id]);
       fetchListas();
+      handleEvents("List modified", "success", "bi bi-check2-circle", true);
     } catch (error) {
       console.error("Error:", error);
+      handleEvents(
+        "List not modified",
+        "danger",
+        "bi bi-exclamation-circle",
+        true
+      );
     }
   };
 
@@ -85,9 +124,23 @@ function Listas({ id }) {
       setIsDisabled({ ...isDisabled, [id]: true });
       await actualizarTarea(id, descripcionTemporalTarea[id]);
       fetchListas();
+      handleEvents("Task modified", "success", "bi bi-check2-circle", true);
     } catch (error) {
       console.error("Error:", error);
+      handleEvents(
+        "Task not modified",
+        "danger",
+        "bi bi-exclamation-circle",
+        true
+      );
     }
+  };
+
+  const handleEvents = async (msg, color, icon, visible) => {
+    setToastMessage(msg);
+    setToastColor(color);
+    setToastIcon(icon);
+    setToastVisible(visible);
   };
 
   const handleClick = (id) => {
@@ -140,20 +193,14 @@ function Listas({ id }) {
                 id={lista.id}
                 className="listaName"
                 maxLength={20}
-                disabled={isDisabled[lista.id] !== false}
+                readOnly={isDisabled[lista.id] !== false}
                 value={descripcionTemporalLista[lista.id] || lista.nombre}
                 onChange={(event) => {
                   handleInputChangeLista(event, lista.id);
                 }}
+                onClick={() => handleClick(lista.id)}
                 onBlur={() => handleActualizarLista(lista.id)}
               ></input>
-              <button
-                id="botonLista"
-                className="p-2 h-25"
-                onClick={() => handleClick(lista.id)}
-              >
-                <i className="bi bi-pencil-fill"></i>
-              </button>
               <button
                 id="botonLista"
                 className="p-2 h-25"
@@ -169,17 +216,19 @@ function Listas({ id }) {
                   id="tareas"
                   className="d-flex flex-row flex-nowrap justify-content-between"
                 >
-                  <input 
-                  type="text"
-                  id={tareas.id}
-                  className="tareaName"
-                  maxLength={20}
-                  disabled={isDisabled[tareas.id] !== false}
-                  value={descripcionTemporalTarea[tareas.id] || tareas.descripcion}
-                  onChange={(event) => {
-                    handleInputChangeTarea(event, tareas.id);
-                  }}
-                  onBlur={() => handleActualizarTarea(tareas.id)}
+                  <input
+                    type="text"
+                    id={tareas.id}
+                    className="tareaName"
+                    maxLength={20}
+                    disabled={isDisabled[tareas.id] !== false}
+                    value={
+                      descripcionTemporalTarea[tareas.id] || tareas.descripcion
+                    }
+                    onChange={(event) => {
+                      handleInputChangeTarea(event, tareas.id);
+                    }}
+                    onBlur={() => handleActualizarTarea(tareas.id)}
                   ></input>
                   <div className="d-flex flex-row gap-1">
                     <button
@@ -199,21 +248,28 @@ function Listas({ id }) {
               ))}
               <button
                 id="añadirTareaBtn"
-                className="btn btn-dark"
-                onClick={() => handleAñadirTarea("Nueva tarea", lista.id)}
+                onClick={() => handleAñadirTarea("New task", lista.id)}
               >
-                + Añadir tarea
+                <i className="bi bi-plus-circle"></i>
               </button>
             </ul>
           </li>
         ))}
         <button
-          className="btn btn-dark"
-          onClick={() => handleAñadirLista("Nueva lista")}
+          id="añadirListaBtn"
+          onClick={() => handleAñadirLista("New list")}
         >
-          + Añadir lista
+          <i className="bi bi-plus-circle"></i>
         </button>
       </ul>
+
+      <Toast
+        msg={toastMessage}
+        visible={toastVisible}
+        color={toastColor}
+        icon={toastIcon}
+        onClose={() => setToastVisible(false)}
+      />
     </div>
   );
 }

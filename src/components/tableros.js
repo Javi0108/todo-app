@@ -101,12 +101,14 @@ function Tableros({ onSelectTablero }) {
 
   return (
     <div id="menu">
+      <h3 className="text-white px-3">DoAll - ToDo App</h3>
+      <hr></hr>
       <ul className="list-group">
         {tablero.map((tableros) => (
           <li
             key={tableros.id}
             id="tabDesc"
-            className="tabDesc list-group-item bg-dark text-white"
+            className="tabDesc list-group-item"
             onClick={(event) => handleTabClick(event, tableros.id)}
           >
             <i className="bi bi-journal-bookmark-fill"></i>
@@ -124,14 +126,14 @@ function Tableros({ onSelectTablero }) {
             ></input>
             <button
               id="tabsBtn"
-              className="btn btn-dark"
+              className="btn"
               onClick={() => handleEditClick(tableros.id)}
             >
               <i className="bi bi-pencil-fill"></i>
             </button>
             <button
               id="tabsBtn"
-              className="btn btn-dark"
+              className="btn"
               onClick={() => {
                 handleEliminarTablero(tableros.id);
               }}
@@ -142,10 +144,10 @@ function Tableros({ onSelectTablero }) {
         ))}
         <button
           id="añadirTablero"
-          className="btn btn-dark"
+          className="btn"
           onClick={() => handleAñadirTablero("")}
         >
-          + Añadir tablero
+          + Add board
         </button>
       </ul>
     </div>
