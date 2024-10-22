@@ -210,11 +210,13 @@ function Listas({ id }) {
             </div>
             <ul id="listaTareas">
               {lista.tareas.map((tareas) => (
+                
                 <li
                   key={tareas.id}
                   id="tareas"
-                  className="d-flex flex-row flex-nowrap justify-content-between"
+                  className="d-flex flex-row flex-nowrap justify-content-between align-items-baseline"
                 >
+                  <i className="bi bi-grip-vertical"></i>
                   <input
                     type="text"
                     id={tareas.id}

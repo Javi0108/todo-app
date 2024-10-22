@@ -56,7 +56,7 @@ export const actualizarTarea = async (id, descripcion) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ descripcion }),
+      body: JSON.stringify({ id, descripcion }),
     });
     if (!response.ok) {
       throw new Error("Error al actualizar el registro");
