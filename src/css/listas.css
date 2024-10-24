@@ -7,7 +7,8 @@
 
 #tablero {
     width: 100vw;
-    background-color: #685798;
+    background-color: #fff;
+    margin-top: 5rem;
 }
 
 #tituloTablero {
@@ -16,48 +17,20 @@
     margin-top: 2rem;
 }
 
-.listaName {
-    background-color: transparent;
-    border: 0px;
-    font-size: x-large;
-    font-weight: 500;
-    width: 250px;
-    color: white;
-}
-
-#listas {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    list-style-type: none;
-}
-
-#listaTareas {
-    padding-left: 0px;
-}
-
-#botonLista {
-    background-color: transparent;
-    border: 0px;
-    border-radius: 5px;
-    transition: background-color ease 0.2s;
-    color: white;
-}
-
-#botonLista:hover {
-    background-color: #8a7c9c;
-    border: 0px;
-}
-
 #tareas {
     list-style-type: none;
     padding-left: 0px;
 }
 
-.tareaName {
+#tareaName {
     background-color: transparent;
     border: 0px;
-    color: white;
+    margin-top: .5rem;
+}
+
+#tareaDate {
+    background-color: transparent;
+    border: 0px;
     margin-top: .5rem;
 }
 
@@ -65,7 +38,6 @@
     background-color: transparent;
     border: 0px;
     border-radius: 5px;
-    color: white;
     transition: all ease 0.2s;
 }
 
@@ -73,39 +45,14 @@
     background-color: #4d3f72;
 }
 
-#elementosListas {
-    min-width: 300px;
-    background-color: rgb(34, 24, 48, 0.5);
-    color: white;
-    padding: 1rem;
-    border-radius: 10px;
-}
-
 #añadirTareaBtn {
     background-color: transparent;
     border: 0px;
     border-radius: 5px;
-    width: 100%;
-    margin-top: .5rem;
     font-size: larger;
-    color: white;
     transition: all ease 0.2s;
 }
 
 #añadirTareaBtn:hover {
     background-color: #4d3f72;
-}
-
-#añadirListaBtn {
-    background-color: rgb(34, 24, 48, 0.5);
-    border: 0px;
-    border-radius: 5px;
-    color: white;
-    width: 300px;
-    height: 50px;
-    transition: all 0.2s ease;
-}
-
-#añadirListaBtn:hover {
-    background-color: rgb(34, 24, 48, 1);
 }
