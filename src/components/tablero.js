@@ -133,8 +133,8 @@ function Tablero() {
     <div id="tablero" className="tablero">
       <div className="d-flex flex-column align-items-center justify-content-center">
         <div className="d-flex flex-row gap-3 align-items-center mb-3">
-          <img src="logo.jpg" alt="Logo de DoAll" width={60} height={60}></img>
-          <h1>DoAll</h1>
+          <img src="logo.png" alt="Logo de DoAll" width={120} height={120}></img>
+          <h1 id="title"><span style={{color: "#FE6951"}}>Do</span><span style={{color: "#5FC3F3"}}>All</span></h1>
         </div>
         <div className="d-flex flex-row gap-3">
           <input
@@ -151,7 +151,7 @@ function Tablero() {
           </button>
         </div>
       </div>
-      <ul>
+      <ul className="my-4">
         {tareas.map((tarea) => (
           <li
             key={tarea.id}
