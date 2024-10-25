@@ -1,0 +1,13 @@
+#confirmBtn {
+    background-color: transparent;
+    border: 0px;
+    padding: 6.5px;
+    border-radius: 5px;
+    color: white;
+    background-color: #b90504;
+    transition: all ease 0.2s;
+}
+
+#confirmBtn:hover {
+    background-color: #990100;
+}

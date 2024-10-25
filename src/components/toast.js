@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 function Toast({ msg, visible, color, icon, onClose }) {
   useEffect(() => {
     if (visible) {
-      const timeout = setTimeout(onClose, 2000);
+      const timeout = setTimeout(onClose, 3000);
       return () => clearTimeout(timeout); // Limpiar timeout si el componente se desmonta
     }
   }, [visible, onClose]);
